@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: { country_name: str
 
 // Main page component
 const CountryPage = async ({ params }: { params: { country_name: string } }) => {
-  const countryName = (await params).country_name.toLowerCase();
+  const countryName = (params).country_name.toLowerCase();
   const country = countryDetails[countryName];
 
   return (
