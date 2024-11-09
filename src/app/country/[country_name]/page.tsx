@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+
 interface Country {
   name: string;
   population: number;
@@ -18,21 +18,14 @@ const countryDetails: { [key: string]: Country } = {
   turkey: { name: 'Turkey', population: 85000000, capital: 'Ankara' },
 };
 
-// Metadata generation
-export async function generateMetadata({ params }: { params: { country_name: string } }): Promise<Metadata> {
-  const countryName = (await params).country_name.toLowerCase();
-  const country = countryDetails[countryName];
 
-  if (!country) {
-    return { title: 'Country not found' };
-  }
-  return { title: `${country.name} - Details` };
+interface CountryPageProps {
+  params: Promise<{ country_name: string }>;
 }
 
-// Main page component
-const CountryPage = async ({ params }: { params: { country_name: string } }) => {
-  const countryName = (params).country_name.toLowerCase();
-  const country = countryDetails[countryName];
+export default async function CountryPage({ params }: CountryPageProps): Promise<JSX.Element> {
+  const { country_name } = await params;  // Await `params` here
+  const country = countryDetails[country_name.toLowerCase()] || null;
 
   return (
     <div className="p-4">
@@ -47,6 +40,4 @@ const CountryPage = async ({ params }: { params: { country_name: string } }) => 
       )}
     </div>
   );
-};
-
-export default CountryPage;
+}
